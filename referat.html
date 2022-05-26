@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link rel="stylesheet" href="css/site.css"/>
+        <title>
+            Запис на потребителско видео през уеб
+        </title>
+    </head>
+    <body>
+        <ul class="navigation">
+            <li class="nav-parent" data-link="intro"> <a href="#intro"> Въведение </a> </li>
+            <li class="nav-parent" data-link="get-user-media"> <a href="#get-user-media"> GetUserMedia API </a></li>
+            <li class="nav-child" data-link="first-steps"> <a href="#first-steps"> Първи стъпки </a> </li>
+            <li class="nav-child" data-link="camera-access"> <a href="#camera-access"> Интерактивен достъп до камерата </a> </li>
+            <li class="nav-grandchild" data-link="get-camera-access"> <a href="#get-camera-access"> Взимане на достъп до камерата </a> </li>
+            <li class="nav-grandchild" data-link="get-raw-data"> <a href="#get-raw-data"> Достъп до информацията от камерата </a> </li>
+            <li class="nav-grandchild" data-link="save-data"> <a href="#save-data"> Запазване на информацията от камерата </a> </li>
+            <li class="nav-child" data-link="ask-for-permission"> <a href="#ask-for-permission"> Допитване до потребителя за разрешение за достъп до камерата</span> </a> </li>
+            <li class="nav-grandchild" data-link="use-permission-api"> <a href="#use-permission-api"> Използване на API за проверка дали вече имаме достъп до камерата </a> </li>
+            <li class="nav-parent" data-link="media-recorder"> <a href="#media-recorder"> Media Recorder </a> </li>
+            <li class="nav-child" data-link="media-recorder-js-content"> <a href="#media-recorder-js-content">Инициализиране на глобални променливи</a> </li>
+            <li class="nav-child" data-link="media-recorder-utility-functions"> <a href="#media-recorder-utility-functions">Помощни функции</a> </li>
+            <li class="nav-child" data-link="start-media-recorder"> <a href="#start-media-recorder">Стартиране на операцията по записване</a> </li>
+            <li class="nav-child" data-link="stop-input-stream"> <a href="#stop-input-stream">Спиране на входящия стрийм</a> </li>
+            <li class="nav-child" data-link="getting-input-stream"> <a href="#getting-input-stream">Взимане на входящия стрийм</a> </li>
+            <li class="nav-child" data-link="handling-the-stop-button"> <a href="#handling-the-stop-button">Стоп бутон</a> </li>
+            <li class="nav-child" data-link="demo"> <a href="#demo">Демо</a> </li>
+            <li class="nav-parent" data-link="sources"> <a href="#sources">Източници</a> </li>
+        </ul>
+        <main class="main-content">
+            <header class="title">
+                <h1> Запис на потребителско видео през уеб </h1>
+            </header>        
+            <section class="intro-section">               
+                <article>
+                    <header id="intro" class="section-title">
+                        <h1> Въведение </h1>
+                    </header>
+                    <p>
+                        В днешно време, все повече и повече браузъри имат възможността да достъпват както видео, така и звукови входни данни. 
+                        Но в зависимост от браузъра, който се използва, това може да бъде изцяло динамично, или може да бъде постигнато благодарение на специализирани приложения, изтеглени
+                        на устройството, ползвано от потребителя.
+                    </p>
+                    <p>
+                        В този реферат ще може да научите по какви начини се интегрира потребителско видео в сайт, като ще бъдат предоставени примери, които ще бъдат подробно обяснени. Вмъкването на
+                        видео не изисква никакви допълнителни плъгини и програми. Ще разберете как може да вземете информацията за видеото, как да добавите старт бутон, както и, разбира се, възможност за добавяне 
+                        на аудио към видеото. Ще разгледаме два начина за вмъкване, съответно GetUserMedia API и Media Recorder.
+                    </p>
+                </article>
+            </section>
+            <section class="get-user-media-section">
+                <hr/>            
+                    <article>
+                        <header id="get-user-media" class="get-user-media-title">
+                            <h1> GetUserMedia API </h1>
+                        </header>
+                        GetUserMedia API позволява достъп до мултимедийни стриймове като видео, аудио, или и двете едновременно, от локални устройства. Благодарение на него разработчиците
+                        могат да достъпят аудио и видео източници само чрез извикването на една функция, както и улеснява потребителите, които не трябва да теглят допълнителен софтуер.
+                    </article>
+                <section class="first-steps-section">               
+                    <article>
+                        <header id="first-steps" class="section-title">
+                            <h1> Първи стъпки </h1>
+                        </header>
+                        Като за начало, трябва да помолите потребителя да предостави предварително записан файл. Може да го направите, като просто създадете <span class="special-word">input</span> елемент с атрибут 
+                        <span class="special-word">accept</span>, който показва, че можем да приемаме само видео файлове.
+                        
+                        <figure>
+                            <img src="img/first_screenshot.png"/>
+                            <figcaption> Код 1 - Изпращане на молба за предоставяне на видео файл. </figcaption>
+                        </figure>
+                        
+                        Добавяме и <span class="special-word">capture</span> атрибут, който покзва, че искаме да го получим директно от камерата.
+                        Този метод ще проработи на всяка платформа с разликата, че на десктоп устройства програмата ще подкани потребителя да прикачи файла, в Safari на IOS това ще отвори камера приложението,
+                        което ще позволи на потребителя да заснеме видео и да го изпрати на уеб страницата, а пък на Android програмата ще даде на потребителя избор кое приложение да използва, за да заснеме видеото.
+                        Много от устройствата имат повече от една камера, затова ако програмата има предпочитания коя камера да използва, <span class="special-word">capture</span> атрибутът се задава
+                        на <span class="special-word">user</span>, ако искаме да достъпим предната камера, или <span class="special-word">environment</span>, ако искаме да достъпим задната камера.
+
+                        <figure>
+                            <img src="img/second_screenshot.png"/>
+                            <figcaption> Код 2 - Достъпване на предна или задна камера. </figcaption>
+                        </figure>
+                        
+                        Важно е да се отбележи, че това е валидно само ако браузъра поддържа тази операция и ако избраната камера е налична, защото в противен случай
+                        браузърът може да избере друга камера.
+                        След като потребителят е готов и се е завърнал в уебсайта, трябва да намерим начин да използваме файловата информация. Възможно решение да се използва <span class="special-word">onchange event</span> 
+                        върху <span class="special-word">input</span> елемента и след това да прочетем <span class="special-word">files</span> характеристиката на <span class="special-word">event</span> обекта.
+                        
+                        <figure class="first-steps-image">
+                            <img src="img/third_screenshot.png"/>
+                            <figcaption> Код 3 - Взимане на подадения файл. </figcaption>
+                        </figure>
+
+                        След като имате достъп до файла, може да правите каквото искате по него, като например:
+                        <ul class="main-content-list">
+                            <li> Да го закачите за <span class="special-word">video</span> елемент, за да можете да го пуснете. </li>
+                            <li> Да го свалите върху устройството на потребителя. </li>
+                            <li> Да го изпратите до сървър като използвате <span class="special-word">XMLHttpRequest</span>. </li>
+                            <li> Да начертае фреймовете върху <span class="special-word">canvas</span> (платно) и да приложите филтри върху него. </li>
+                        </ul>
+
+                        Дори използването на този метод да се среща навсякъде, той е най-непривлекателен. Ние наистина ще искаме да получим достъп до камерата и да пресъздадем всичко директно върху страницата.
+
+                    </article>
+                </section>
+                <section class="camera-access-section">
+                    <hr/>                 
+                    <article>
+                        <header id="camera-access" class="section-title">
+                            <h1> Интерактивен достъп до камерата </h1>
+                        </header>
+                        Съвременните браузъри имат директна връзка с камерата, позволяващи им да свършат нужната работа без потребителя да трябва да напуска браузъра.
+                    </article>
+                    <section class="get-camera-access-section">
+                        <article>
+                            <header id="get-camera-access">
+                                <h1 class="mini-section-title"> Взимане на достъп до камерата </h1>
+                            </header>
+                            Можем да достъпим камерата чрез използване на API, наречено <span class="method">getUserMedia()</span>, което ще подкани потребителя да позволи достъп до неговите камера и микрофон.
+                            Ако методът е завършил успешно, той ще върне stream, съдържащ информацията от камерата или микрофона, и тогава можем или да го закачим за <span class="special-word">video</span> елемент,
+                            или да го закачим за WebRTC stream, или да го запазим, използвайки <span class="api">MediaRecorder API</span>.
+                            За да вземем информация от камерата, ние просто настройваме <span class="code">video: true</span> в обекта, който е подаден до <span class="api">getUserMedia API</span>.
+                        
+                            <figure>
+                                <img src="img/fourth_screenshot.png"/>
+                                <figcaption> Код 4 - Взимане на информацията от камерата. </figcaption>
+                            </figure>
+
+                            Ако е нужно да избирате специфична камера, можете първо да изброите наличните камери:
+                        
+                            <figure>
+                                <img src="img/fifth_screenshot.png"/>
+                                <figcaption> Код 5 - Достъпване на всички налични камери. </figcaption>
+                            </figure>
+
+                            След това може да подадете идентификационен номер на устройството, което искате да използвате, когато извикате <span class="method">getUserMedia()</span>.
+                            
+                            <figure>
+                                <img src="img/sixth_screenshot.png"/>
+                                <figcaption> Код 6 - Подаваме идентификационния намер на желаното устройство.</figcaption>
+                            </figure>
+                        </article>
+                    </section>
+                    <section class="get-raw-data-section">                    
+                        <article>
+                            <header id="get-raw-data">
+                                <h1 class="mini-section-title"> Достъп до информацията от камерата </h1>
+                            </header>
+                            За да достъпим видео информацията от камерата, може да начертаем всеки фрейм върху платно и директно да можем да променяме пикселите. 
+                            За 2D платно използваме <span class="method">drawImage()</span> метода. Пример:
+                            
+                            <figure>
+                                <img src="img/seventh_screenshot.png"/>
+                                <figcaption> Код 7 - Чертаене на фрейм върху 2D платно. </figcaption>
+                            </figure>
+
+                            Ако използвате WebGL платно, може да използвате <span class="special-word">video</span> елемент като източник на текстурата.
+                            
+                            <figure>
+                                <img src="img/eighth_screenshot.png"/>
+                                <figcaption> Код 8 - Чертаене на фрейм върху WebGL платно. </figcaption>
+                            </figure>
+
+                            Забележете, че тези методи взимат текущия фрейм от видеото. За да вземете повече фреймове, трябва да преначертавате всеки фрейм върху платното всеки път.
+                        </article>
+                    </section>
+                    <section class="save-data-section">                        
+                        <article>
+                            <header id="save-data">
+                                <h1 class="mini-section-title"> Запазване на информацията от камерата </h1>
+                            </header>
+                            Най-лесния начин да запазим информация от камерата е да използваме <span class="api"> MediaRecorder API </span>.
+                            Това API ще вземе стрийма създаден от <span class="method">getUserMedia()</span> и постепенно ще запазва информацията от стрийма в зададената от нас дестинация.
+
+                            <figure>
+                                <img src="img/ninth_screenshot.png"/>
+                                <figcaption> Код 9 - Запазване на информацията от камерата. </figcaption>
+                            </figure>
+
+                            В нашия случай ние запазваме информацията директно в масив, който после може да превърнем в <span class="special-word">Blob</span>. 
+                        </article>
+                    </section>
+                </section>
+                <section class="ask-for-permission-section">
+                    <hr/>                   
+                    <article>
+                        <header id="ask-for-permission" class="section-title">
+                            <h1> Допитване до потребителя за разрешение за достъп до камерата. </h1>
+                        </header>
+                        Ако потребителя не е давал разрешение на даден сайт достъп до камерата, то тогава веднага щом извикаме <span class="method">getUserMedia()</span>, браузърът ще подкани
+                        потребителя да даде разрешение на сайта да получи достъп до камерата. Важно е тук да се спомене, че потребителя мрази да получава допитвания за
+                        разрешения до камера / микрофон веднага щом влезе в даден сайт, което води до доста често отказване или игнориране на допитването.
+                        Най-добрата практика е да се попита за разрешение чак когато е необходимо. 
+                    </article>
+                    <section class="use-permission-api-section">                      
+                        <article>
+                            <header id="use-permission-api">
+                                <h1 class="mini-section-title"> Използване на API за проверка дали вече имаме достъп до камерата. </h1>
+                            </header>
+                            Съществен проблем се създава от това, че <span class="api">getUserMedia API</span> не дава ясен отговор дали имаме достъп до камерата.
+                            Това може да бъде разрешено в някои от браузърите като се използва <span class="api">"Permission API"</span> или по-точно <span class="api">navigator.permission API</span>
+                            ни позволява да заявим, че искаме да достъпим специфични "APIs" без да трябва да питаме потребителя отново. За да разберем дали имаме достъп до камерата на потребителя може да 
+                            подадем <span class="code">name: 'camera'</span> в заявката и това ще ни върне:
+                            <ul class="main-content-list">
+                                <li> granted - потребителя ни е дал разрешение преди </li>
+                                <li> prompt - потребителя не ни е дал разрешение и ще бъде попитан когато извикаме <span class="method">getUserMedia()</span> </li>
+                                <li> denied - потребителя е блокирал достъпа ни до камерата и няма да можем да я достъпим </li>
+                            </ul>
+                            И сега вече може да проверим бързо дали има нужда да изменяме нашия потребителски интерфейс, за да покажем на потребителя какви стъпки трябва да предприеме за успешно записване на 
+                            потребителско видео през уеб.
+                            
+                            <figure>
+                                <img src="img/tenth_screenshot.png"/>
+                                <figcaption> Код 10 - Проверяваме какво разрешение ни е дал потребителя и в зависимост от него какви действия трябва да предприемем. </figcaption>
+                            </figure>
+
+                        </article>
+                    </section>
+                </section>
+            </section>
+            <section class="media-recorder-section">
+                <hr/>                
+                <article>
+                    <header id="media-recorder" class="media-recorder-title">
+                        <h1>Media Recorder</h1>
+                    </header>
+                    След като разгледахме начина за записване на потребителско видео използвайки getUserMedia() и споменахме много бегло за <span class="api">MediaRecorder</span> API, в следващата
+                    част ще разгледаме по-подробно този интерфейс, какви функционалности ни предоставя и по какъв начин можем да го използваме.
+                </article>
+                <section class="media-recorder-js-content-section">
+                    <article>
+                        <header id="media-recorder-js-content" class="section-title">
+                            <h1>Инициализиране на глобални променливи</h1>
+                        </header>
+                        В откъса от код показан по-долу, създадените променливи ще са референция към елементи, с които трябва да работим, за да изпълним нужните изисквания. 
+                        Последната променлива <span class="special-word">recordingTimeMS</span> обозначава дължината на видеата, които ще записваме, и й присвояваме стойност 5000 милисекунди.
+
+                        <figure>
+                            <img src="img/eleventh_screenshot.png"/>
+                            <figcaption> Код 11 - Дефиниране на глобални променливи.  </figcaption>
+                        </figure>
+                    </article>
+                </section>
+                <section class="media-recorder-utility-functions-section">
+                    <hr/>                   
+                    <article class="inline-article">
+                        <header id="media-recorder-utility-functions" class="section-title">
+                            <h1>Помощни функции</h1>
+                        </header>
+                        <div style="margin-bottom: 2.5rem;">
+                            <figure class="align-picture-right fix-picture">
+                                <img src="img/twelfth_screenshot.png"/>
+                                <figcaption>Код 12 - Създаване на Logger.</figcaption>
+                            </figure>
+                            Ще създадем помощни функции, които ще ни трябват по-късно в записа на потребителско видео.
+                            Като за начало, ще ни трябва <span class="method">log()</span> функция, която да принтира низове до <span class="special-word">div</span> елемент, за да може да споделяме информация
+                            с потребителя, като по този начин имаме постоянна връзка с него и той постоянно получава информация, особено полезно когато възникне грешка.
+                        </div>
+                
+                        <div class="divider"></div>
+
+                        <div>
+                            <figure class="align-picture-right fix-picture">
+                                <img src="img/thirteenth_screenshot.png"/>
+                                <figcaption> Код 13 - Стартиране на таймер, след изтичане на дадените секунди.</figcaption>
+                            </figure>
+                            Функцията <span class="method">wait()</span> ще върне обект от тип <span class="special-word">Promise</span>, който се разрешава чак след като посочените милисекунди изтекат.
+                            <span class="method">Wait()</span> функцията използа тъй наречената <span class="special-word">arrow</span> функция, която
+                            извиква <span class="method">WindowOrWorkerGlobalScope.setTimeout</span>. Неговата функция е да стартира таймер и при неговото изтичане се изпълнява дадена функция.
+                            Това ни позволява да използваме <span class="special-word">promise syntax</span>. Ще говорим повече за това в следващите секции.
+                        </div>
+                    </article>
+                </section>
+                <section class="start-media-recorder-section">
+                    <hr/>                  
+                    <article>
+                        <header id="start-media-recorder" class="section-title">
+                            <h1>Стартиране на операцията по записване</h1>
+                        </header>
+                        Функцията <span class="method">startRecording()</span> стартира процеса по записване. Функцията взима два параметъра - <span class="special-word">MediaStream</span>, от който да 
+                        записва, както и желаната дължина на записаното видео в милисекунди. Ако превишим лимита на зададената дължина, процесът автоматично приключва.
+                        <figure>
+                            <img src="img/fourteenth_screenshot.png"/>
+                            <figcaption> Код 14 - Описание на процеса по записване. </figcaption>
+                        </figure>
+                            <p class="code-description-title">Описание на кода</p>
+                            <ul class="code-description">
+                                <li>Ред 2: Създаване на MediaRecorder, който ще записва от подадения <span class="special-word">stream</span>.</li>
+                                <li>Ред 3: Създава празен масив <span class="special-word">data</span>, който ще се използва, за да съхранява <span class="special-word">Blobs</span> от подадената информация.
+                                информацията от подадения стрийм. След това този <span class="special-word">Blob</span> се вкарва в <span class="special-word">data</span> масива.</li>
+                                <li>Ред 6-7: Стартира процеса като извиква <span class="method">recorder.start()</span> и отпечатва съобщение към лога с актуализираното състояние на
+                                записвача и секундите, които трябва да запише.</li>
+                                <li>Ред 9-12: Създава ново обещание (Promise), който се разрешава ако се извика <span class="special-word">onstop event</span> на <span class="api">MediaRecorder</span>, и се
+                                отказва ако се извика <span class="method">onerror</span>.</li>
+                                <li>Ред 14-16: Създава нов <span class="special-word">Promise</span>, което се разрешава, когато зададеното време от милисекунди изтече. Ако <span class="api">MediaRecorder</span> 
+                                все още работи, то всичко се прекратява.</li>
+                                <li>Ред 18-22: Създава се нов <span class="special-word">Promise</span>, който е изпълнен, когато и предните две обещания бъдат разрешени. Когато и това обещание се разреши, информацията 
+                                от масива се връща до потребителя, който е извикал функцията <span class="method">startRecording()</span>.</li>
+                            </ul>
+                    </article>
+                </section>
+                <section class="stop-input-stream-section">
+                    <hr class="fix-hr"/>                
+                    <article>
+                        <header id="stop-input-stream" class="section-title">
+                            <h1>Спиране на входящия стрийм</h1>
+                        </header>
+                        Функцията <span class="method">stop()</span> спира входящия стрийм. Това се случва, когато се извика <span class="method">MediaStream.getTracks()</span>, използвайки
+                        <span class="method">forEach()</span>, за да извикаме <span class="method">MediaStreamTrack.stop()</span>. 
+                        <figure>
+                            <img src="img/fifteenth_screenshot.png"/>
+                            <figcaption> Код 15 - Спиране на входящия стрийм. </figcaption>
+                        </figure>
+                    </article>
+                </section>
+                <section class="getting-input-stream-section">
+                    <hr/>                    
+                    <article>
+                        <header id="getting-input-stream" class="section-title">
+                            <h1>Взимане на входящия стрийм</h1>
+                        </header>
+                        <figure>
+                            <img src="img/sixteenth_screenshot.png"/>
+                            <figcaption> Код 16 - Взимане и обработване на входящия стрийм. </figcaption>
+                        </figure>
+                            <p class="code-description-title">Описание на кода</p>
+                            <ul class="code-description">
+                                <li>Ред 2-4: <span class="method">MediaDevices.getUserMedia</span> се извиква, за да поиска нов <span class="api">MediaStream</span>, който има както и видео, така и аудио. 
+                                Това е стрийма, който ще запишем. </li>
+                                <li>Ред 5-9: Когато обещанието върнато от <span class="method">getUserMedia()</span> е разрешено, видеото записано от камерата на потребителя се показва в кутия за преглед. 
+                                Видеото започва без звук, така че ако потребителя иска да чуе звук, трябва сам да пусне аудиото. Има бутон за изтегляне. На ред 8 ние казваме на
+                                <span class="method">preview.captureStream()</span> да извика <span class="method">preview.mozCaptureStream()</span>, за да може кода ни да работи в Mozilla Firefox.
+                                След като видеото се пусне, се създава ново обещание, което впоследствие се връща като резултат. </li>
+                                <li>Ред 10: Когато видеото се стартира, ние извикваме <span class="method">startRecording()</span> функцията, която създадохме по-рано, подавайки й като аргумен видео стройма
+                                и дължината му в милисекунди. Както казахме по-рано, <span class="method">startRecording()</span> връща <span class="special-word">Promise</span>. </li>
+                                <li>Ред 11-15: Първо получаваме като входяща информация масива от информация, който ще наричаме <span class="special-word">recordedChunks</span>. 
+                                Първото нещо, което трябва да направим е да съединим инфорацията в масива в един единствен <span class="special-word">Blob</span>, чийто
+                                тип е <span class="special-word">video/webm</span>. След това създаваме URL,който сочи към нашия <span class="special-word">Blob</span>, като
+                                използваме метода <span class="method">URL.createObjectURL()</span>. След това настройваме <span class="special-word">download</span> атрибута на бутона за теглене като 
+                                "RecordedVideo.webm", което означава, че казваме на браузъра, когато потребителя натисне бутона, то ще се изтегли файл с име <span class="api">"RecordedVideo.webm"</span>, което
+                                всъщност е записаното видео. </li>
+                                <li>Ред 17-18: Размерът и типът на записаното видео се отпечатват на мястото, предназначено за логъра под видеото и бутона за теглене. </li>
+                                <li>Ред 20: Методът <span class="method">catch()</span> принтира всички възникнали грешки, като извиква <span class="method">log()</span> функцията.</li>
+                            </ul>
+                    </article>
+                </section>
+                <section class="handling-the-stop-button-section">
+                    <hr/>                   
+                    <article>
+                        <header id="handling-the-stop-button" class="section-title">
+                            <h1>Стоп бутон</h1>
+                        </header>
+                        Последният код, който ни остана да напишем, е това да направим стоп бутон, който да прекратява възпроизвеждането на видеото, като използваме <span class="method">addEventListener()</span>.
+                        <figure>
+                            <img src="img/seventeenth_screenshot.png"/>
+                            <figcaption> Код 17 - Добавяне на стоп бутон. </figcaption>
+                        </figure>
+                    </article>
+                </section>
+                <section class="demo-section">
+                    <hr/>
+                    <article>
+                        <header id="demo" class="section-title">
+                            <h1>Демо</h1>
+                        </header>
+                        <iframe height="400" style="width: 100%;" scrolling="no" title="QWppvXN" src="https://codepen.io/dmanchev/embed/QWppvXN?height=265&theme-id=light&default-tab=result"
+                                frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true" allow="camera *; microphone *">
+                            See the Pen <a href='https://codepen.io/dmanchev/pen/QWppvXN'>QWppvXN</a> by Mitko
+                            (<a href='https://codepen.io/dmanchev'>@dmanchev</a>) on <a href='https://codepen.io'>CodePen</a>.
+                        </iframe>
+                        <p><em> Забележка: Puffin не позволява използването на камера, затова демото няма да може да бъде тествано тук, можете да копирате кода и да тествате във ваш файл. </em></p>
+                    </article>
+                </section>
+            </section>
+            <section class="sources-section">
+                <hr/>    
+                <article>
+                    <header id="sources" class="section-title">
+                        <h1> Източници </h1>
+                    </header>
+                    <ul class="link-description">
+                        <li><strong>[1] Mat Scales, <span class="source-link-title">"Google developers' guide to recording video from the user"</span>, последно актуализиран на 26-01-2021, последно посетен на 16-05-2021,</strong> </li>
+                        <li><a href="https://developers.google.com/web/fundamentals/media/recording-video" class="sources-link" target="_blank"> https://developers.google.com/web/fundamentals/media/recording-video </a></li>
+                        <li><strong>[2] MDN Web Docs, <span class="source-link-title">"Mozilla Web technology for developers, Recording a media element"</span>, последно посетен на 19-05-2021,</strong> </li>
+                        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaStream_Recording_API/Recording_a_media_element" class="sources-link" target="_blank">https://developer.mozilla.org/Recording_a_media_element</li>
+                    </ul>
+                </article>
+            </section>        
+        </main>
+        <script src="./javascript/anchorHighlight.js"></script>
+    </body>
+</html>

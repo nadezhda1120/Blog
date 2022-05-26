@@ -1,0 +1,300 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap');
+
+* {
+    font-family: Ubuntu;
+    color:rgb(243, 236, 236);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+html::-webkit-scrollbar, ul.navigation::-webkit-scrollbar {
+    width: 13px;
+}
+
+html::-webkit-scrollbar-thumb, ul.navigation::-webkit-scrollbar-thumb {
+    background-color: #202225;
+    border-radius: 10px;
+}
+
+body {
+    background-color: #36393f;
+    margin: 0;
+}
+
+h1 {
+    margin-bottom: 25px;
+    margin-top: 0px;
+}
+
+header {
+    padding-top: 10px;
+}
+
+article {
+    text-align: justify;
+    line-height: 1.7em;
+}
+
+li {
+    padding: 1em;
+}
+
+section {
+    margin-top: 4rem;
+}
+
+pre {
+    text-align: left;
+    background-color: rgb(176, 189, 189);
+}
+
+figure {
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.title {
+    text-align: center;
+    font-style: italic;
+    margin-bottom: 2rem;
+}
+
+.main-content {
+    margin-left: 30%;
+    margin-right: 5%;
+    line-height: 1em;
+    padding-top: 100px;
+}
+
+.section-title {
+    font-size: 2rem;
+}
+
+.nav-parent {
+    font-size: 18px;
+}
+
+.nav-child {
+    margin-left: 0.5rem;
+    font-size: 15px;
+}
+
+.nav-grandchild {
+    margin-left: 1rem;
+    font-size: 13px;
+}
+
+.method {
+    font-family: monospace;
+    background-color: #2d2d2d;
+    color: #e8a6ce;
+    font-weight: bold;
+    padding: 3px;
+    border-radius: 5px;
+    border: 1px solid #777777;
+}
+
+.api {
+    font-family: monospace;
+    background-color: #2d2d2d;
+    color: #4ad64a;
+    font-weight: bold;
+    padding: 3px;
+    border-radius: 5px;
+    border: 1px solid #777777;
+}
+
+.code {
+    font-family: monospace;
+    background-color: #2d2d2d;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 3px;
+    border-radius: 5px;
+    border: 1px solid #777777;
+}
+
+.special-word {
+    font-family: monospace;
+    background-color: #2d2d2d;
+    color: #9bbaff;
+    font-weight: bold;
+    padding: 3px;
+    border-radius: 5px;
+    border: 1px solid #777777;
+}
+
+a:visited, a:link {
+    text-decoration: none;
+    color: #a7a9ad;
+}
+
+a:hover {
+    text-decoration: none;
+    color: #dcddde;
+}
+
+.active {
+    background-color: #393c42;
+    color: #dcddde;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+
+    box-shadow: 0 1px 1px rgba(0,0,0,0.11), 0 2px 2px rgba(0,0,0,0.11);
+}
+
+.active a {
+    color: #dcddde
+}
+
+.navigation {
+    position: fixed;
+    top:auto;
+    max-width: 25%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: #2f3136;
+    font-weight: bold;
+    overflow: auto;
+    border-top : 0;
+    border-left: 0;
+    border-bottom: 0;
+}
+
+ul.navigation {
+    margin-top:0;
+    height: 100%;
+    list-style-type: none;
+    padding-left: 20px;
+    gap: 7px;
+
+}
+
+.main-content-list {
+    margin: 2rem;
+}
+
+
+
+.get-user-media-title, .media-recorder-title {
+    font-size: 2.3em;
+    font-style: italic;
+}
+
+.sources-section {
+    margin-bottom: 10%;
+}
+
+a.sources-link:visited {
+    color: #1cb0d7;
+}
+
+a.sources-link:hover {
+    color:orange;
+}
+
+.align-picture-right {
+    margin: 0 0 0 3%;
+    float:right;
+}
+
+.align-picture-left {
+    margin: 5% 4% 1% 1%;
+    float:left;
+    max-width:65%;
+}
+
+.divider {
+    margin-top: 20px;
+}
+
+.mini-section-title {
+    font-size: 1.55em;
+}
+
+.start-media-recorder-picture-description {
+    text-align: center;
+    font-weight: bold;
+}
+
+.code-description, .link-description {
+    list-style-type: none;
+    text-align: justify;
+}
+
+.code-description-title {
+    font-style: italic;
+    padding-left: 40px;
+}
+
+.source-link-title {
+    font-style: italic;
+}
+
+@media only screen and (min-width: 2400px) {
+    .fix-hr {
+        width:100%;
+    }
+
+    .divider {
+        display: block;
+        margin-top: 5%;
+        margin-bottom: 5%;
+    }
+
+    * {
+        font-size: 20px;
+    }
+
+    h1 {
+        font-size: 35px;
+    }  
+}
+
+@media only screen and (max-width: 1658px) {
+    .align-picture-right{
+        float: none;
+        margin: auto;
+        display:block;
+    }
+
+    .fix-picture {
+        margin-bottom: 2%;
+        float:none;
+        display: block;
+        margin-left: 0;
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+    .main-content {
+        margin-right: 10px;
+    }
+
+    .align-picture-right {
+        float:none;
+        margin: auto;
+    }
+
+    .fourteenth-picture {
+        display:block;
+        float:none;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 5%;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    ul.navigation {
+        display: none;
+    }
+    
+    .main-content {
+        margin: 0;
+        padding: 10px;
+    }
+}
